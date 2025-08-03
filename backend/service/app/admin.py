@@ -60,7 +60,6 @@ class Maintenance(admin.ModelAdmin):
         return obj.maintenance_type.name
     get_maintenance_type.short_description = 'Вид ТО'
 
-
     def get_vehicle(self, obj):
         return obj.vehicle.factory_number
     get_vehicle.short_description = 'Машина'
@@ -68,18 +67,18 @@ class Maintenance(admin.ModelAdmin):
     def get_service(self, obj):
         if obj.service is not None:
             return obj.service.fullname
-        return 'Хозспособ'
+        return 'Самостоятельно'
     get_service.short_description = 'Организация, проводившая ТО'
 
 
 @admin.register(WarrantyClaim)
 class WarrantyClaim(admin.ModelAdmin):
-    list_display = ('get_vehicle', 'operating_time', 'failure_date', 'recovery_date', 'get_recovery_method')
+    list_display = ('get_vehicle', 'operating_time', 'failure_date', 'recovery_date', 'get_method_recovery')
     list_filter = ('vehicle',)
 
-    def get_recovery_method(self, obj):
-        return obj.recovery_method.name
-    get_recovery_method.short_description = 'Способ восстановления'
+    def get_method_recovery(self, obj):
+        return obj.method_recovery.name
+    get_method_recovery.short_description = 'Способ восстановления'
 
     def get_vehicle(self, obj):
         return obj.vehicle.factory_number

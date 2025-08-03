@@ -89,6 +89,8 @@ class Vehicle(models.Model):
 
 
 class Maintenance(models.Model):
+    vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE, related_name='vehicle_maintenance',
+                                verbose_name='Машина')
     maintenance_type = models.ForeignKey(ReferenceDirectory, limit_choices_to={'ref_type': 'type_maintenance'},
                                          on_delete=models.CASCADE, related_name='type_maintenance',
                                          verbose_name='Вид ТО')
@@ -97,14 +99,13 @@ class Maintenance(models.Model):
     order_number = models.CharField(max_length=128, unique=True, verbose_name='№ заказ-наряда',
                                          error_messages={'unique': 'Номер используется'})
     order_date = models.DateField(verbose_name='Дата заказ-наряда')
-    vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE, related_name='vehicle_maintenance', verbose_name='Машина')
     service = models.ForeignKey(User, limit_choices_to={'type': 'SO'}, on_delete=models.SET_NULL,
                                 null=True, blank=True, related_name='company_maintenance',
                                 verbose_name='Организация, проводившая ТО')
 
     def get_value(self):
         if self.service is None:
-            return 'Хозспособ'
+            return 'Самостоятельно'
         return str(self.service)
 
     class Meta:
@@ -114,6 +115,8 @@ class Maintenance(models.Model):
 
 
 class WarrantyClaim(models.Model):
+    vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE, related_name='vehicle_warranty_claim',
+                                verbose_name='Mашина')
     failure_date = models.DateField(verbose_name='Дата отказа')
     operating_time = models.IntegerField(verbose_name='Наработка, м/час')
     node_fail = models.ForeignKey(ReferenceDirectory, limit_choices_to={'ref_type': 'node_fail'},
@@ -126,7 +129,6 @@ class WarrantyClaim(models.Model):
     spare_parts = models.CharField(max_length=128, null=True, blank=True, verbose_name='Используемые запасные части')
     recovery_date = models.DateField(verbose_name='Дата восстановления')
     downtime = models.IntegerField(editable=False, verbose_name='Время простоя техники')
-    vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE, related_name='vehicle_warranty_claim', verbose_name='Mашина')
     service = models.ForeignKey(User, limit_choices_to={'type': 'SO'}, on_delete=models.CASCADE,
                                 related_name='company_warranty_claim', verbose_name='Cервисная компания')
 
