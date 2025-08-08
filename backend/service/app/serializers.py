@@ -129,27 +129,27 @@ class VehicleSerializer(serializers.ModelSerializer):
     vehicle_model = ReferenceDirectorySerializer(read_only=True)
     vehicle_model_id = serializers.PrimaryKeyRelatedField(
         source='vehicle_model',
-        queryset=ReferenceDirectory.objects.filter(ref_type='vehicle_model')
+        queryset=ReferenceDirectory.objects.filter(ref_type='model_tech')
     )
     engine_model = ReferenceDirectorySerializer(read_only=True)
     engine_model_id = serializers.PrimaryKeyRelatedField(
         source='engine_model',
-        queryset=ReferenceDirectory.objects.filter(ref_type='engine_model')
+        queryset=ReferenceDirectory.objects.filter(ref_type='model_engine')
     )
     transmission_model = ReferenceDirectorySerializer(read_only=True)
     transmission_model_id = serializers.PrimaryKeyRelatedField(
         source='transmission_model',
-        queryset=ReferenceDirectory.objects.filter(ref_type='transmission_model')
+        queryset=ReferenceDirectory.objects.filter(ref_type='model_transmission')
     )
     drive_bridge_model = ReferenceDirectorySerializer(read_only=True)
     drive_bridge_model_id = serializers.PrimaryKeyRelatedField(
         source='drive_bridge_model',
-        queryset=ReferenceDirectory.objects.filter(ref_type='drive_bridge_model')
+        queryset=ReferenceDirectory.objects.filter(ref_type='model_drive_bridge')
     )
     control_bridge_model = ReferenceDirectorySerializer(read_only=True)
     control_bridge_model_id = serializers.PrimaryKeyRelatedField(
         source='control_bridge_model',
-        queryset=ReferenceDirectory.objects.filter(ref_type='control_bridge_model')
+        queryset=ReferenceDirectory.objects.filter(ref_type='model_control_bridge')
     )
     client = serializers.SerializerMethodField()
     client_id = serializers.PrimaryKeyRelatedField(
@@ -220,7 +220,7 @@ class MaintenanceSerializer(serializers.ModelSerializer):
     maintenance_type = ReferenceDirectorySerializer(read_only=True)
     maintenance_type_id = serializers.PrimaryKeyRelatedField(
         source='maintenance_type',
-        queryset=ReferenceDirectory.objects.filter(ref_type='maintenance_type')
+        queryset=ReferenceDirectory.objects.filter(ref_type='type_maintenance')
     )
     vehicle = serializers.SerializerMethodField()
     vehicle_id = serializers.PrimaryKeyRelatedField(
