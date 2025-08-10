@@ -7,14 +7,14 @@ frontend install
 npm install
 npm run dev
 
-User	      Mail	                  Password	    Type	                    Fullname
-client1	    client1@client1.ru	    Pr8w|exq	    Клиент	                  ИП Трудников С.В.
+User	        Mail	                  Password	    Type	                    Fullname
+client1	      client1@client1.ru	    Pr8w|exq	    Клиент	                  ИП Трудников С.В.
 service1	  service1@service1.ru	  Pr8w|exq	    Сервисная организация	    ООО Промышленная техника
 service2	  service2@service2.ru	  Pr8w|exq	    Сервисная организация	    ООО Силант
-client2	    client2@client2.ru	    Pr8w|exq	    Клиент	                  ООО "ФПК21"
-client3	    client3@client3.ru	    Pr8w|exq	    Клиент	                  ООО "МНС77"
-client4	    client4@client4.ru	    Pr8w|exq	    Клиент	                  ООО "Ранский ЛПХ"
-client5	    client5@client5.ru	    Pr8w|exq	    Клиент	                  ООО "Комплект-Поставка"
-client6	    client6@client6.ru	    Pr8w|exq	    Клиент	                  ООО "РМК"
-client7	    client7@client7.ru	    Pr8w|exq	    Клиент	                  АО "Зандер"
+client2	      client2@client2.ru	    Pr8w|exq	    Клиент	                  ООО "ФПК21"
+client3	      client3@client3.ru	    Pr8w|exq	    Клиент	                  ООО "МНС77"
+client4	      client4@client4.ru	    Pr8w|exq	    Клиент	                  ООО "Ранский ЛПХ"
+client5	      client5@client5.ru	    Pr8w|exq	    Клиент	                  ООО "Комплект-Поставка"
+client6	      client6@client6.ru	    Pr8w|exq	    Клиент	                  ООО "РМК"
+client7	      client7@client7.ru	    Pr8w|exq	    Клиент	                  АО "Зандер"
 service3	  service3@service3.ru	  Pr8w|exq	    Сервисная организация	    ООО ФНС
