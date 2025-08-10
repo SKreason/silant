@@ -1,3 +1,14 @@
+"""
+Сериализаторы для приложения управления техникой и сервисными операциями.
+
+Этот модуль содержит сериализаторы Django REST Framework для работы с:
+- Аутентификацией (JWT токены)
+- Справочниками
+- Техникой (Vehicle)
+- Техническим обслуживанием (Maintenance)
+- Рекламациями (WarrantyClaim)
+"""
+
 from datetime import datetime
 import pytz
 
@@ -10,11 +21,30 @@ from rest_framework_simplejwt.tokens import AccessToken
 
 from .models import ReferenceDirectory, Vehicle, Maintenance, WarrantyClaim
 
+# Получаем модель пользователя
 User = get_user_model()
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    """Кастомный сериализатор для получения JWT токенов с дополнительными полями."""
+
     def validate(self, attrs):
+        """
+        Валидация учетных данных и формирование ответа с токенами.
+
+        Добавляет к стандартному ответу:
+        - Сроки действия access и refresh токенов
+        - Основную информацию о пользователе
+
+        Args:
+            attrs (dict): Входные данные (username, password)
+
+        Returns:
+            dict: Ответ с токенами и дополнительной информацией
+
+        Raises:
+            ValidationError: Если аутентификация не удалась
+        """
         auth_kwargs = {
             'username': attrs['username'],
             'password': attrs['password'],
@@ -32,6 +62,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         refresh = self.get_token(self.user)
         access = refresh.access_token
 
+        # Добавляем сроки действия токенов в формате timestamp
         data['access_expires_at'] = datetime.fromtimestamp(
             access.payload['exp'],
             tz=pytz.timezone('Asia/Yekaterinburg')
@@ -41,6 +72,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
             tz=pytz.timezone('Asia/Yekaterinburg')
         ).timestamp()
 
+        # Добавляем основную информацию о пользователе
         data['user'] = {
             'username': self.user.username,
             'type': self.user.type,
@@ -50,11 +82,24 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 
 class CustomTokenRefreshSerializer(TokenRefreshSerializer):
+    """Кастомный сериализатор для обновления JWT токена с добавлением срока действия нового access токена."""
+
     def validate(self, attrs):
+        """
+        Обновление access токена и добавление информации о сроке его действия.
+
+        Args:
+            attrs (dict): Входные данные (refresh токен)
+
+        Returns:
+            dict: Новый access токен и срок его действия
+        """
+
         data = super().validate(attrs)
 
         access = AccessToken(data['access'])
 
+        # Добавляем срок действия нового access токена
         data['access_expires_at'] = datetime.fromtimestamp(
             access.payload['exp'],
             tz=pytz.timezone('Asia/Yekaterinburg')
@@ -64,6 +109,8 @@ class CustomTokenRefreshSerializer(TokenRefreshSerializer):
 
 
 class ReferenceDirectorySerializer(serializers.ModelSerializer):
+    """Сериализатор для справочников."""
+
     ref_type_display = serializers.CharField(source='get_ref_type_display', read_only=True)
 
     class Meta:
@@ -72,24 +119,32 @@ class ReferenceDirectorySerializer(serializers.ModelSerializer):
 
 
 class ClientsSerializer(serializers.ModelSerializer):
+    """Сериализатор для клиентов (пользователей с типом 'CL')."""
+
     class Meta:
         model = User
         fields = ['id', 'fullname']
 
     def get_queryset(self):
+        """Возвращает только пользователей с типом 'CL' (клиенты)."""
         return User.objects.filter(type='CL')
 
 
 class ServiceOrganizationSerializer(serializers.ModelSerializer):
+    """Сериализатор для сервисных организаций (пользователей с типом 'SO')."""
+
     class Meta:
         model = User
         fields = ['id', 'fullname']
 
     def get_queryset(self):
+        """Возвращает только пользователей с типом 'SO' (сервисные организации)."""
         return User.objects.filter(type='SO')
 
 
 class VehiclePublicSerializer(serializers.ModelSerializer):
+    """Сериализатор для публичного отображения информации о технике (без привязки к клиентам)."""
+
     vehicle_model = serializers.SerializerMethodField()
     engine_model = serializers.SerializerMethodField()
     transmission_model = serializers.SerializerMethodField()
@@ -106,26 +161,33 @@ class VehiclePublicSerializer(serializers.ModelSerializer):
 
     @extend_schema_field(OpenApiTypes.STR)
     def get_vehicle_model(self, obj):
+        """Возвращает название модели техники."""
         return obj.vehicle_model.name
 
     @extend_schema_field(OpenApiTypes.STR)
     def get_engine_model(self, obj):
+        """Возвращает название модели двигателя."""
         return obj.engine_model.name
 
     @extend_schema_field(OpenApiTypes.STR)
     def get_transmission_model(self, obj):
+        """Возвращает название модели трансмиссии."""
         return obj.transmission_model.name
 
     @extend_schema_field(OpenApiTypes.STR)
     def get_drive_bridge_model(self, obj):
+        """Возвращает название модели ведущего моста."""
         return obj.drive_bridge_model.name
 
     @extend_schema_field(OpenApiTypes.STR)
     def get_control_bridge_model(self, obj):
+        """Возвращает название модели управляемого моста."""
         return obj.control_bridge_model.name
 
 
 class VehicleSerializer(serializers.ModelSerializer):
+    """Полный сериализатор для техники со всеми связями."""
+
     vehicle_model = ReferenceDirectorySerializer(read_only=True)
     vehicle_model_id = serializers.PrimaryKeyRelatedField(
         source='vehicle_model',
@@ -203,6 +265,7 @@ class VehicleSerializer(serializers.ModelSerializer):
 
     @extend_schema_field(OpenApiTypes.OBJECT)
     def get_client(self, obj):
+        """Возвращает информацию о клиенте в формате {id, fullname}."""
         return {
             'id': obj.client.id,
             'fullname': obj.client.fullname,
@@ -210,6 +273,7 @@ class VehicleSerializer(serializers.ModelSerializer):
 
     @extend_schema_field(OpenApiTypes.OBJECT)
     def get_service(self, obj):
+        """Возвращает информацию о сервисной организации в формате {id, fullname}."""
         return {
             'id': obj.service.id,
             'fullname': obj.service.fullname,
@@ -217,6 +281,8 @@ class VehicleSerializer(serializers.ModelSerializer):
 
 
 class MaintenanceSerializer(serializers.ModelSerializer):
+    """Сериализатор для записей о техническом обслуживании."""
+
     maintenance_type = ReferenceDirectorySerializer(read_only=True)
     maintenance_type_id = serializers.PrimaryKeyRelatedField(
         source='maintenance_type',
@@ -256,6 +322,7 @@ class MaintenanceSerializer(serializers.ModelSerializer):
         }
     })
     def get_vehicle(self, obj):
+        """Возвращает информацию о технике в формате {id, factory_number}."""
         return {
             'id': obj.vehicle.id,
             'number': obj.vehicle.factory_number
@@ -269,12 +336,25 @@ class MaintenanceSerializer(serializers.ModelSerializer):
         }
     })
     def get_service(self, obj):
+        """Возвращает информацию о сервисной организации или строку 'Самостоятельно'."""
         return {
             'id': obj.service.id if obj.service else '',
             'fullname': obj.service.fullname if obj.service else 'Cамостоятельно',
         }
 
     def validate(self, data):
+        """
+        Проверка, что для данной техники не существует уже ТО такого типа.
+
+        Args:
+            data (dict): Входные данные для валидации
+
+        Returns:
+            dict: Валидированные данные
+
+        Raises:
+            ValidationError: Если ТО такого типа для этой техники уже существует
+        """
         maintenance_type = data.get('maintenance_type')
         vehicle = data.get('vehicle')
 
@@ -293,6 +373,7 @@ class MaintenanceSerializer(serializers.ModelSerializer):
 
 
 class WarrantyClaimSerializer(serializers.ModelSerializer):
+    """Сериализатор для рекламаций по гарантии."""
     node_fail = ReferenceDirectorySerializer(read_only=True)
     node_fail_id = serializers.PrimaryKeyRelatedField(
         source='node_fail',
@@ -342,6 +423,7 @@ class WarrantyClaimSerializer(serializers.ModelSerializer):
 
     @extend_schema_field(OpenApiTypes.OBJECT)
     def get_vehicle(self, obj):
+        """Возвращает информацию о технике в формате {id, factory_number}."""
         return {
             'id': obj.vehicle.id,
             'number': obj.vehicle.factory_number
@@ -349,6 +431,7 @@ class WarrantyClaimSerializer(serializers.ModelSerializer):
 
     @extend_schema_field(OpenApiTypes.OBJECT)
     def get_service(self, obj):
+        """Возвращает информацию о сервисной организации в формате {id, fullname}."""
         return {
             'id': obj.service.id,
             'fullname': obj.service.fullname,

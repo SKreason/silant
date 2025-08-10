@@ -1,11 +1,37 @@
+"""
+Модели данных для системы управления техникой и сервисными операциями.
+
+Содержит следующие модели:
+- User - кастомная модель пользователя с ролями
+- ReferenceDirectory - справочники системы
+- Vehicle - модель техники
+- Maintenance - записи о техническом обслуживании
+- WarrantyClaim - рекламации по гарантии
+"""
+
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
 class User(AbstractUser):
+    """
+    Кастомная модель пользователя с дополнительными полями.
+
+    Наследует стандартную модель пользователя Django и добавляет:
+    - Поле type с выбором роли пользователя
+    - Поле fullname для хранения полного имени
+
+    Роли пользователей:
+    - CL (Клиент) - владелец техники
+    - SO (Сервисная организация) - обслуживающая компания
+    - MR (Менеджер) - администратор системы
+    """
+    # Константы для типов пользователей
     CLIENT = "CL"
     SERV_ORG = "SO"
     MANAGER = "MR"
+
+    # Выборы для поля type
     TypeUser = {
         CLIENT: 'Клиент', SERV_ORG: 'Сервисная организация', MANAGER: 'Менеджер'
     }
@@ -13,6 +39,7 @@ class User(AbstractUser):
     fullname = models.CharField(max_length=128, null=True, blank=True, verbose_name='Полное имя')
 
     def __str__(self):
+        """Строковое представление пользователя (полное имя или username)."""
         if self.fullname:
             return self.fullname
         return self.username
@@ -22,6 +49,17 @@ class User(AbstractUser):
         verbose_name_plural = 'Пользователи'
 
 class ReferenceDirectory(models.Model):
+    """
+    Модель справочников системы.
+
+    Содержит различные типы справочников:
+    - Модели техники и компонентов
+    - Виды ТО
+    - Узлы отказа
+    - Способы восстановления
+    """
+
+    # Типы справочников
     DIR_TYPES = {
         'model_tech': 'Модель техники',
         'model_engine': 'Модель двигателя',
@@ -37,6 +75,7 @@ class ReferenceDirectory(models.Model):
     description = models.TextField(blank=True, null=True, verbose_name='Описание')
 
     def __str__(self):
+        """Строковое представление справочника (название)."""
         return self.name
 
     class Meta:
@@ -45,6 +84,16 @@ class ReferenceDirectory(models.Model):
 
 
 class Vehicle(models.Model):
+    """
+    Модель техники (машины).
+
+    Содержит полную информацию о технике:
+    - Заводские номера машины и компонентов
+    - Модели (ссылки на справочники)
+    - Данные о поставке
+    - Привязку к клиенту и сервисной организации
+    """
+
     factory_number = models.CharField(max_length=128, unique=True, verbose_name='Зав. № машины',
                                          error_messages={'unique': 'Номер используется'})
     vehicle_model = models.ForeignKey(ReferenceDirectory, limit_choices_to={'ref_type': 'model_tech'},
@@ -81,6 +130,7 @@ class Vehicle(models.Model):
                                 related_name='services', verbose_name='Сервисная компания')
 
     def __str__(self):
+        """Строковое представление техники (заводской номер)."""
         return self.factory_number
 
     class Meta:
@@ -89,6 +139,15 @@ class Vehicle(models.Model):
 
 
 class Maintenance(models.Model):
+    """
+    Модель записи о техническом обслуживании (ТО).
+
+    Содержит:
+    - Ссылку на технику
+    - Вид ТО (из справочника)
+    - Даты и параметры обслуживания
+    - Сервисную организацию
+    """
     vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE, related_name='vehicle_maintenance',
                                 verbose_name='Машина')
     maintenance_type = models.ForeignKey(ReferenceDirectory, limit_choices_to={'ref_type': 'type_maintenance'},
@@ -104,6 +163,7 @@ class Maintenance(models.Model):
                                 verbose_name='Организация, проводившая ТО')
 
     def get_value(self):
+        """Возвращает строковое представление сервисной организации или 'Самостоятельно'."""
         if self.service is None:
             return 'Самостоятельно'
         return str(self.service)
@@ -115,6 +175,16 @@ class Maintenance(models.Model):
 
 
 class WarrantyClaim(models.Model):
+    """
+    Модель рекламации по гарантии.
+
+    Содержит:
+    - Ссылку на технику
+    - Данные об отказе и восстановлении
+    - Использованные запчасти
+    - Расчет времени простоя
+    """
+
     vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE, related_name='vehicle_warranty_claim',
                                 verbose_name='Mашина')
     failure_date = models.DateField(verbose_name='Дата отказа')
@@ -133,6 +203,7 @@ class WarrantyClaim(models.Model):
                                 related_name='company_warranty_claim', verbose_name='Cервисная компания')
 
     def save(self, *args, **kwargs):
+        """Автоматический расчет времени простоя при сохранении."""
         self.downtime = (self.recovery_date - self.failure_date).days
         super().save(*args, **kwargs)
 
