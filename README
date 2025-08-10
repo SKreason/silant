@@ -7,7 +7,7 @@ frontend install
 npm install
 npm run dev
 
-User	       Mail	                  Password	    Type	                    Fullname
+User	       Mail	                    Password	    Type	                    Fullname
 client1	      client1@client1.ru	    Pr8w|exq	    Клиент	                  ИП Трудников С.В.
 service1	  service1@service1.ru	    Pr8w|exq	    Сервисная организация	    ООО Промышленная техника
 service2	  service2@service2.ru	    Pr8w|exq	    Сервисная организация	    ООО Силант
