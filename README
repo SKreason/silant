@@ -1,0 +1,8 @@
+backend install 
+cd .\service\
+pip install -r requirements.txt
+python.exe manage.py runserver
+
+frontend install
+npm install
+npm run dev
