@@ -1,0 +1,186 @@
+@use "../../base/variables" as *;
+
+.form-container {
+    background: $color-main-white;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 800px;
+    cursor: initial;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    animation: slideIn 0.3s ease;
+    max-height: 95vh;
+    overflow-y: auto;
+
+    .form-header {
+        margin: 0 0 10px;
+        font-family: $PTAstraSans;
+        @include font(22, 700, $color-black);
+    }
+
+    .form-body {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 5px;
+
+        @include breakpoint(lg) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @include breakpoint(md) {
+            grid-template-columns: repeat(1, 1fr);
+        }
+
+        &.reference {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+
+        .form-group {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            margin: 0 0 20px 0;
+
+            label {
+                font-family: $PTAstraSans;
+                @include font(16, 400, $color-black);
+                margin: 0 0 10px 0;
+            }
+
+            .input-wrapper {
+                position: relative;
+
+                input {
+                    padding: 0 17px 0;
+                    font-family: $PTAstraSans;
+                    @include font(16, 400, $color-black);
+                    width: 100%;
+                    border: 1px solid $color-gray;
+                    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.05);
+                    height: 43px;
+
+                    &:focus {
+                        outline-color: $color-main-blue;
+
+                    }
+                }
+
+                select {
+                    padding: 0 17px 0;
+                    font-family: $PTAstraSans;
+                    @include font(16, 400, $color-black);
+                    width: 100%;
+                    border: 1px solid $color-gray;
+                    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.05);
+                    height: 43px;
+
+                    &:focus {
+                        outline-color: $color-main-blue;
+
+                    }
+                }
+
+                textarea {
+                    padding: 5px 17px 5px;
+                    font-family: $PTAstraSans;
+                    @include font(16, 400, $color-black);
+                    width: 100%;
+                    border: 1px solid $color-gray;
+                    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.05);
+                    min-height: 86px;
+
+                    &:focus {
+                        outline-color: $color-main-blue;
+
+                    }
+                }
+
+                .error-container {
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    height: 20px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+
+                .error-message {
+                    position: absolute;
+                    top: 4px;
+                    font-family: $PTAstraSans;
+                    @include font(14, 400, $color-red);
+                    padding: 0 4px;
+                }
+
+                .react-datepicker {
+
+                    &__input-container {
+                        display: flex;
+                        flex-flow: row-reverse;
+                        align-items: center;
+                    }
+                }
+
+                & > div.react-datepicker-wrapper,
+                & > div > div.react-datepicker__input-container,
+                & > div > div.react-datepicker__input-container input {
+                    width: 100%;
+                }
+            }
+        }
+    }
+
+    .submit-group {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        border-radius: 0;
+
+
+        .submit-button {
+            padding: 5px 18px;
+            height: 38px;
+            font-family: $PTAstraSans;
+            border-radius: 4px;
+            border: none;
+            background-color: $color-main-blue;
+            @include font(20, 400, $color-white);
+            cursor: pointer;
+            -webkit-transition: all .3s ease;
+            transition: all .3s ease;
+
+            &:hover {
+                -webkit-filter: brightness(150%);
+                filter: brightness(150%);
+            }
+
+            &.loading {
+                cursor: wait;
+            }
+        }
+
+        .close-button {
+            padding: 5px 18px;
+            height: 38px;
+            font-family: $PTAstraSans;
+            border-radius: 4px;
+            border: none;
+            background-color: $color-main-red;
+            @include font(20, 400, $color-white);
+            cursor: pointer;
+            -webkit-transition: all .3s ease;
+            transition: all .3s ease;
+
+            &:hover {
+                -webkit-filter: brightness(150%);
+                filter: brightness(150%);
+            }
+        }
+    }
+}

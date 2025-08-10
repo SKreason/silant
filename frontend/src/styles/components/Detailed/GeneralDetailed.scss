@@ -1,0 +1,200 @@
+@use "../../base/variables" as *;
+
+.modal {
+
+    &-overlay {
+        position: fixed;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(2px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 50;
+        animation: fadeIn 0.3s ease;
+    }
+
+    &-container {
+        width: 80%;
+        max-width: 1440px;
+        max-height: 95vh;
+        transition: all 0.2s ease;
+        animation: slideIn 0.3s ease;
+
+        @include breakpoint(md) {
+            width: 85%;
+        }
+
+        &.reference {
+            width: 450px;
+
+            @include breakpoint(sm) {
+                width: 80%;
+            }
+
+            @include breakpoint(min) {
+                width: 90%;
+            }
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+
+            .edit-btn {
+
+                button {
+                    margin: 5px 0;
+
+                    font-family: $PTAstraSans;
+                    border-radius: 4px;
+                    border: none;
+                    background-color: $color-main-blue;
+                    @include font(20, 400, $color-white);
+                    height: 38px;
+                    cursor: pointer;
+                    -webkit-transition: all .3s ease;
+                    transition: all .3s ease;
+
+                    &:hover {
+                        -webkit-filter: brightness(150%);
+                        filter: brightness(150%);
+                    }
+                }
+            }
+
+            .delete-btn {
+
+                button {
+                    margin: 5px 0;
+
+                    font-family: $PTAstraSans;
+                    border-radius: 4px;
+                    border: none;
+                    background-color: $color-main-red;
+                    @include font(20, 400, $color-white);
+                    height: 38px;
+                    cursor: pointer;
+                    -webkit-transition: all .3s ease;
+                    transition: all .3s ease;
+
+                    &:hover {
+                        -webkit-filter: brightness(150%);
+                        filter: brightness(150%);
+                    }
+
+                    &.deleting {
+                        cursor: wait;
+                    }
+                }
+            }
+        }
+    }
+
+    &-header {
+        position: sticky;
+        z-index: 60;
+        top: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: inherit;
+
+        &__title {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 8px;
+            height: 50px;
+            background-color: $color-main-white;
+            font-family: $PTAstraSans;
+            @include font(28, 700, $color-black);
+            flex: 1;
+            margin: 5px 5px 5px 0;
+
+            @include breakpoint(md) {
+                font-size: 24px;
+            }
+
+            @include breakpoint(sm) {
+                font-size: 20px;
+            }
+        }
+
+        &__close-btn {
+            height: 50px;
+            width: 50px;
+            border: none;
+            background-color: $color-main-white;
+            transition: background-color 0.2s;
+
+            &:hover {
+                cursor: pointer;
+                background-color: $color-main-red;
+
+                svg {
+                    color: $color-white;
+                }
+            }
+
+            svg {
+                width: 30px;
+                height: 30px;
+                color: $color-black;
+            }
+        }
+    }
+
+    &-content {
+        max-height: 85vh;
+        overflow-y: auto;
+
+        &__grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+
+            @include breakpoint(lg) {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            @include breakpoint(sm) {
+                grid-template-columns: repeat(1, 1fr);
+            }
+        }
+
+        &__item {
+            background-color: $color-main-white;
+            padding: 8px;
+            position: relative;
+            transition: background-color 0.2s ease;
+
+            font-family: $PTAstraSans;
+            @include font(18, 400, $color-black);
+
+            &:hover {
+                background-color: $color-white;
+            }
+
+            &-icon {
+                position: absolute;
+                top: 8px;
+                right: 8px;
+                height: 30px;
+                color: $color-main-blue;
+            }
+
+            &-label {
+                font-family: $PTAstraSans;
+                @include font(22, 400, $color-main-blue);
+
+                @include breakpoint(md) {
+                    font-size: 20px;
+
+                }
+            }
+        }
+    }
+}

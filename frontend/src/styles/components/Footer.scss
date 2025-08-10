@@ -1,0 +1,33 @@
+@use "../base/variables" as *;
+
+.footer {
+    background: $color-main-blue;
+
+    &__content {
+        padding: 0 60px;
+        height: 120px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        font-family: $PTAstraSans;
+        @include font(20, 400, $color-white);
+        transition: all 0.2s ease;
+
+        @include breakpoint(lg) {
+            padding: 0 30px;
+        }
+
+        @include breakpoint(min) {
+            padding: 0 12px;
+        }
+
+        &__contacts {
+            text-align: left;
+        }
+
+        &__copyright {
+            text-align: right;
+        }
+    }
+}

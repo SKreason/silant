@@ -1,0 +1,179 @@
+@use "../base/variables" as *;
+
+.header {
+    background: $color-main-white;
+    box-shadow: rgba(17, 17, 26, 0.1) 0 1px 0;
+
+    &__username {
+      padding: 30px 0px 30px;
+      display: flex;
+      flex-direction: row;
+      font-family: $PTAstraSans;
+
+      @include breakpoint(lg) {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .description {
+        @include font(22, 400, $color-black);
+        margin: 0 10px 0 0;
+        text-align: center;
+
+        @include breakpoint(lg) {
+          margin: 0;
+        }
+
+        @include breakpoint(md) {
+          font-size: 20px;
+        }
+
+        @include breakpoint(sm) {
+          font-size: 18px;
+        }
+      }
+
+      .user-data {
+        @include font(22, 700, $color-black);
+        text-align: center;
+
+        @include breakpoint(md) {
+          font-size: 20px;
+        }
+
+        @include breakpoint(sm) {
+          font-size: 18px;
+        }
+      }
+
+    }
+
+    &__content {
+        padding: 20px 60px 20px;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        transition: all 0.2s ease;
+
+        @include breakpoint(lg) {
+            padding: 10px 30px 10px;
+        }
+
+        @include breakpoint(min) {
+            padding: 10px 12px 10px;
+        }
+
+        &__top {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        &__bottom {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+        }
+
+        &__logo {
+            width: 60px;
+            height: 42px;
+            display: none;
+
+            @include breakpoint(sm) {
+                display: flex;
+            }
+        }
+
+        &__alt-logo {
+            height: 50px;
+            width: 170px;
+
+            @include breakpoint(sm) {
+                display: none;
+            }
+        }
+
+        &__title {
+            font-family: $PTAstraSans;
+            @include font(30, 700, $color-black);
+            text-align: center;
+
+            @include breakpoint(md) {
+                font-size: 26px;
+            }
+
+            @include breakpoint(sm) {
+                font-size: 24px;
+            }
+
+            @include breakpoint(min) {
+                width: 380px;
+                font-size: 22px;
+            }
+        }
+
+        &__contacts {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            font-family: $PTAstraSans;
+            gap: 10px;
+
+            @include breakpoint(sm) {
+                flex-direction: column;
+                gap: unset;
+            }
+
+            .number {
+                @include font(20, 400, $color-black);
+
+                @include breakpoint(md) {
+                    font-size: 18px;
+                }
+
+                @include breakpoint(min) {
+                    font-size: 16px;
+                }
+            }
+
+            .telegram-link {
+                @include font(20, 400, $color-gray);
+
+                @include breakpoint(md) {
+                    font-size: 18px;
+                }
+
+                @include breakpoint(min) {
+                    font-size: 16px;
+                }
+            }
+        }
+
+        &__btn {
+            padding: 5px 18px;
+            font-family: $PTAstraSans;
+            @include font(20, 400, $color-white);
+            border: none;
+            background: $color-main-red;
+            cursor: pointer;
+            -webkit-transition: all .3s ease;
+            transition: all .3s ease;
+            border-radius: 4px;
+
+            @include breakpoint(sm) {
+                font-size: 18px;
+                padding: 4px 16px;
+            }
+
+            &:hover {
+                -webkit-filter: brightness(120%);
+                filter: brightness(120%);
+            }
+        }
+
+    }
+
+}

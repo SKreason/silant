@@ -1,0 +1,145 @@
+@use "../../base/variables" as *;
+
+.maintenance-info {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .create {
+      .create-btn {
+        font-family: $PTAstraSans;
+        border-radius: 4px;
+        border: none;
+        background-color: $color-main-blue;
+        @include font(20, 400, $color-white);
+        height: 43px;
+        padding: 8px 18px;
+        cursor: pointer;
+        -webkit-transition: all .3s ease;
+        transition: all .3s ease;
+
+        @include breakpoint(sm) {
+          font-size: 16px;
+        }
+
+        &:hover {
+          -webkit-filter: brightness(150%);
+          filter: brightness(150%);
+        }
+
+        &:disabled {
+          cursor: initial;
+          opacity: 0.5;
+        }
+
+        &.loading {
+          cursor: wait;
+        }
+      }
+    }
+
+    select {
+      font-family: $PTAstraSans;
+      border-radius: 4px;
+      height: 43px;
+      padding: 0 17px;
+      @include font(16, 400, $color-black);
+      cursor: pointer;
+      border: 1px solid $color-gray;
+      box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.05);
+
+      @include breakpoint(sm) {
+        font-size: 16px;
+      }
+
+      &:focus {
+        outline-color: $color-main-blue;
+      }
+    }
+  }
+
+  &__table {
+    margin: 20px 0 0 0;
+
+    .ag-root-wrapper {
+      border-radius: 0;
+    }
+
+    .ag-header {
+      background-color: $color-main-blue;
+
+      .ag-header-cell {
+        padding: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .ag-header-cell-label {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+        }
+
+        .ag-header-cell-text {
+          font-family: $PTAstraSans;
+          @include font(14, 700, $color-white);
+          line-height: 1;
+          text-align: center;
+          white-space: normal;
+          word-wrap: break-word;
+        }
+      }
+    }
+
+    .ag-cell {
+      font-family: $PTAstraSans;
+      @include font(14, 400, $color-black);
+      line-height: 1.5;
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .ag-center-cols-viewport {
+      min-height: unset !important;
+    }
+
+    .ag-column-last::after {
+      border-right: none !important;
+    }
+
+    .ag-row-last {
+      border-bottom-color: #949494 !important;
+    }
+  }
+
+  &__loading {
+    display: flex;
+    padding: 25px;
+    flex-direction: column;
+    align-items: center;
+
+    .loading-text {
+      margin: 10px 0;
+      font-family: $PTAstraSans;
+      @include font(20, 400, $color-black);
+    }
+  }
+
+  &__error {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: $PTAstraSans;
+    @include font(20, 400, $color-main-red);
+  }
+}

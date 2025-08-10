@@ -1,0 +1,64 @@
+@use "typography";
+
+//fonts
+$PTAstraSans: 'PT Astra Sans', sans-serif;
+
+
+//colors
+$color-main-blue: #163E6C;
+$color-main-red: #D20A11;
+$color-main-white: #EBE6D6;
+$color-white: #FFFFFF;
+$color-black: #000000;
+$color-gray: #6e6e6e;
+$color-red: #FF5959;
+$color-light-gray: #E7E7E7FF;
+$color-dark-grey: #6E6E6EFF;
+
+
+// breakpoints
+$media_xxl: 1400px;
+$media_xl: 1200px;
+$media_lg: 992px;
+$media_md: 768px;
+$media_sm: 576px;
+$media_min: 428px;
+
+
+//mixins
+@mixin breakpoint($point) {
+    @if ($point == "xxl") {
+        @media (max-width: $media_xxl) {
+            @content;
+        }
+    } @else if ($point == "xl") {
+        @media (max-width: $media_xl) {
+            @content
+        }
+    } @else if ($point == "lg") {
+        @media (max-width: $media_lg) {
+            @content
+        }
+    } @else if ($point == "md") {
+        @media (max-width: $media_md) {
+            @content
+        }
+    } @else if ($point == "sm") {
+        @media (max-width: $media_sm) {
+            @content
+        }
+    } @else if ($point == "min") {
+        @media (max-width: $media_min) {
+            @content
+        }
+    }
+}
+
+@mixin font($size: 16, $weight: 400, $color: $color-black, $style: normal) {
+    font: {
+        size: $size * 1px;
+        weight: $weight;
+        style: $style;
+    }
+    color: $color;
+}

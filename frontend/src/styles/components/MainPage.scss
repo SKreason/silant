@@ -1,0 +1,22 @@
+@use "../base/variables" as *;
+
+.data-section {
+
+    &__content {
+        margin: 20px 0;
+        padding: 0 60px 0;
+        transition: all 0.2s ease;
+
+        @include breakpoint(lg) {
+            padding: 0 30px 0;
+        }
+
+        @include breakpoint(sm) {
+            margin: 10px 0;
+        }
+
+        @include breakpoint(min) {
+            padding: 0 12px 0;
+        }
+    }
+}

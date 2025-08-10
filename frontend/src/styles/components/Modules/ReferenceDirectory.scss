@@ -1,0 +1,38 @@
+@use "../../base/variables" as *;
+
+.modal-content__wrapper {
+    margin: 0 auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    background-color: $color-main-white;
+
+    select {
+        padding: 0 17px 0;
+        font-family: $PTAstraSans;
+        @include font(16, 400, $color-black);
+        width: 100%;
+        border: 1px solid $color-gray;
+        box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.05);
+        height: 43px;
+
+        &:focus {
+            outline-color: $color-main-blue;
+
+        }
+    }
+
+    label {
+        font-family: $PTAstraSans;
+        @include font(20, 400, $color-main-blue);
+        margin: 0 0 5px 0;
+    }
+
+    .reference {
+        &__description {
+            font-family: $PTAstraSans;
+            @include font(18, 400, $color-black);
+
+        }
+    }
+}
