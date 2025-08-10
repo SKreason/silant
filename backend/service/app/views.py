@@ -8,6 +8,8 @@ from .models import ReferenceDirectory, Vehicle, Maintenance, WarrantyClaim
 from .serializers import CustomTokenObtainPairSerializer, CustomTokenRefreshSerializer, ReferenceDirectorySerializer, \
     ClientsSerializer, ServiceOrganizationSerializer, VehiclePublicSerializer, VehicleSerializer, MaintenanceSerializer, \
     WarrantyClaimSerializer
+from .api_schema import reference_directory_schema, clients_schema, service_organization_schema, vehicle_schema, \
+    maintenance_schema, warranty_claim_schema
 
 User = get_user_model()
 
@@ -19,6 +21,7 @@ class CustomTokenRefresh(TokenRefreshView):
     serializer_class = CustomTokenRefreshSerializer
     
 
+@reference_directory_schema
 class ReferenceDirectoryViewSet(ModelViewSet):
     http_method_names = ['get', 'post', 'put', 'delete', 'head', 'options']
     queryset = ReferenceDirectory.objects.all()
@@ -43,6 +46,7 @@ class ReferenceDirectoryViewSet(ModelViewSet):
         return Response(serializer.data)
     
     
+@clients_schema
 class ClientsViewSet(ModelViewSet):
     http_method_names = ['get', 'head', 'options']
     queryset = User.objects.filter(type='CL')
@@ -50,6 +54,7 @@ class ClientsViewSet(ModelViewSet):
     serializer_class = ClientsSerializer
 
 
+@service_organization_schema
 class ServiceOrganizationViewSet(ModelViewSet):
     http_method_names = ['get', 'head', 'options']
     queryset = User.objects.filter(type='SO')
@@ -57,6 +62,7 @@ class ServiceOrganizationViewSet(ModelViewSet):
     serializer_class = ServiceOrganizationSerializer
 
 
+@vehicle_schema
 class VehicleViewSet(ModelViewSet):
     http_method_names = ['get', 'post', 'put', 'delete', 'head', 'options']
     queryset = Vehicle.objects.all()
@@ -110,6 +116,7 @@ class VehicleViewSet(ModelViewSet):
         return Response(serializer.data)
 
 
+@maintenance_schema
 class MaintenanceViewSet(ModelViewSet):
     http_method_names = ['get', 'post', 'put', 'delete', 'head', 'options']
     queryset = Maintenance.objects.all()
@@ -150,6 +157,7 @@ class MaintenanceViewSet(ModelViewSet):
         return Response(serializer.data)
 
 
+@warranty_claim_schema
 class WarrantyClaimViewSet(ModelViewSet):
     http_method_names = ['get', 'post', 'put', 'delete', 'head', 'options']
     queryset = WarrantyClaim.objects.all()
@@ -189,4 +197,3 @@ class WarrantyClaimViewSet(ModelViewSet):
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
         return Response(serializer.data)
-

@@ -134,6 +134,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_PERMISSION_CLASSES': [
         # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
         'rest_framework.permissions.IsAuthenticated',
@@ -191,4 +192,26 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
 
-
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Silant Project API',
+    'DESCRIPTION': 'API для работы с данными машин, ТО и рекламациями',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'SERVE_PERMISSIONS': ['rest_framework.permissions.AllowAny'],
+    'SECURITY': [
+        {
+            'Bearer': []
+        }
+    ],
+    'COMPONENTS': {
+        'securitySchemes': {
+            'Bearer': {
+                'type': 'http',
+                'scheme': 'bearer',
+                'bearerFormat': 'JWT',
+                'description': 'Введите JWT токен'
+            }
+        }
+    },
+    'SCHEMA_PATH_PREFIX': '/api',
+}
